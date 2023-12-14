@@ -1,21 +1,33 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons'; 
 
 export default function App() {
-  const [timer, setTimer] = useState(0);
+  const [isMenuOpen, setMenuOpen] = useState(false);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTimer((prevTimer) => prevTimer + 1);
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, []); 
+  const toggleMenu = () => {
+    setMenuOpen(!isMenuOpen);
+  };
 
   return (
     <View style={styles.container}>
-      <Text>Timer: {timer} seconds</Text>
+      <TouchableOpacity onPress={toggleMenu} style={styles.menuIcon}>
+        <Ionicons name={isMenuOpen ? 'close' : 'menu'} size={30} color="black" />
+      </TouchableOpacity>
+
+      <View style={styles.content}>
+        <Text>Open up App.js to start working on your app!</Text>
+      </View>
+
+      {isMenuOpen && (
+        <View style={styles.menuContent}>
+          <Text>Menu Item 1</Text>
+          <Text>Menu Item 2</Text>
+          <Text>Menu Item 3</Text>
+        </View>
+      )}
+
       <StatusBar style="auto" />
     </View>
   );
@@ -25,7 +37,27 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    paddingTop: 40,
+    paddingHorizontal: 20,
+  },
+  menuIcon: {
+    position: 'absolute',
+    top: 20,
+    left: 20,
+    zIndex: 1,
+  },
+  content: {
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  menuContent: {
+    position: 'absolute',
+    top: 70,
+    left: 20,
+    backgroundColor: 'white',
+    padding: 10,
+    borderRadius: 5,
+    zIndex: 2,
   },
 });
